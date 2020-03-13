@@ -6,7 +6,7 @@
         <div class="remark">
           <span class="remark-subtitle">使用说明:</span>
           <div>
-            <p>输入任意坐标系 lat,lng 格式的坐标，其他坐标系会自动转化。</p>
+            <p>输入任意坐标系 lng,lat 格式的坐标，其他坐标系会自动转化。</p>
             <p>按下回车或查询按钮，将会在地图上地位。</p>
           </div>
         </div>
