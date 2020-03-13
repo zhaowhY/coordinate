@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <h1 class="title">坐标在线转化工具</h1>
+    <h1 class="title">地理坐标在线转化工具</h1>
     <div class="coord-content">
       <div class="coord-input">
         <div class="remark">
           <span class="remark-subtitle">使用说明:</span>
           <div>
             <p>输入任意坐标系 lng,lat 格式的坐标，其他坐标系会自动转化。</p>
-            <p>按下回车或查询按钮，将会在地图上地位。</p>
+            <p>按下回车或定位按钮，将会在地图上定位。</p>
           </div>
         </div>
         <div class="coord-input-single">
