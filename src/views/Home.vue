@@ -39,6 +39,7 @@
             @input="inputChange('BD09', BD09Value)"
             @blur="inputBlur(BD09Value)"
           >
+          <div class="search-button" @click="search">定位</div>
         </div>
         <span class="search-button" @click="search">定位</span>
         <p class="warning" v-show="isWarning">请输入正确格式的坐标</p>
@@ -149,8 +150,33 @@ export default {
           this.inputBlur(this.BD09Value);
         });
         this.map.addControl(geolocationControl);
+
+        //对某个市进行描边
+        // this.getBoundary();
       });
     },
+    // getBoundary() {
+    //   const bdary = new BMap.Boundary();
+    //   bdary.get('德阳市广汉市', rs => {
+    //     //获取行政区域
+    //     this.map.clearOverlays(); //清除地图覆盖物
+    //     var count = rs.boundaries.length; //行政区域的点有多少个
+    //     if (count === 0) {
+    //       alert('未能获取当前输入行政区域');
+    //       return;
+    //     }
+    //     var pointArray = [];
+    //     for (var i = 0; i < count; i++) {
+    //       var ply = new BMap.Polygon(rs.boundaries[i], {
+    //         strokeWeight: 2,
+    //         strokeColor: '#ff0000'
+    //       }); //建立多边形覆盖物
+    //       this.map.addOverlay(ply); //添加覆盖物
+    //       pointArray = pointArray.concat(ply.getPath());
+    //     }
+    //     this.map.setViewport(pointArray); //调整视野
+    //   });
+    // },
     mapClick(e) {
       this.BD09Value = `${e.point.lng},${e.point.lat}`;
       this.inputChange('BD09', this.BD09Value);
@@ -310,11 +336,15 @@ export default {
   }
 }
 
+.coord-input-single {
+  position: relative;
+}
+
 .search-button {
   display: inline-block;
   position: absolute;
-  left: 577px;
-  top: 164px;
+  left: 580px;
+  bottom: 0;
   padding: 6px 16px;
   background: #409EFF;
   border-radius: 4px;
