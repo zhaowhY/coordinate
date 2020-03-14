@@ -308,7 +308,6 @@ export default {
 }
 
 .coord-describe {
-  width: 930px;
   font-size: 18px;
 
   & > div {
