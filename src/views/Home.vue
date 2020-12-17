@@ -39,10 +39,19 @@
             @input="inputChange('BD09', BD09Value)"
             @blur="inputBlur(BD09Value)"
           >
-          <div class="search-button" @click="search">定位</div>
+          <div
+            class="search-button"
+            @click="search"
+          >定位</div>
         </div>
-        <span class="search-button" @click="search">定位</span>
-        <p class="warning" v-show="isWarning">请输入正确格式的坐标</p>
+        <span
+          class="search-button"
+          @click="search"
+        >定位</span>
+        <p
+          class="warning"
+          v-show="isWarning"
+        >请输入正确格式的坐标</p>
       </div>
       <div class="coord-describe">
         <div>
@@ -61,7 +70,11 @@
             </p>
           </div>
         </div>
-        <table border="1" cellspacing="0px" class>
+        <table
+          border="1"
+          cellspacing="0px"
+          class
+        >
           <tr>
             <th>WGS84坐标系</th>
             <td>GeoJson、天地图（CGCS2000与WGS84坐标几乎一致）</td>
@@ -77,12 +90,36 @@
         </table>
       </div>
     </div>
-    <div id="map" class="map"></div>
+    <div class="map-wrapper">
+      <div
+        id="r-result"
+        class="map-input"
+      >
+        位置搜索:<input
+          type="text"
+          id="suggestId"
+          style="height: 22px; margin-left: 8px;"
+          size="38"
+          value=""
+          placeholder="请输入位置信息"
+        /></div>
+      <div
+        id="map"
+        class="map"
+      ></div>
+    </div>
 
     <div class="links">
       <h2 class="links-title">相关链接</h2>
-      <div class="links-single" v-for="(item, index) of links" :key="index">
-        <a :href="item.link" target="_blank">{{item.name}}</a>
+      <div
+        class="links-single"
+        v-for="(item, index) of links"
+        :key="index"
+      >
+        <a
+          :href="item.link"
+          target="_blank"
+        >{{item.name}}</a>
       </div>
     </div>
   </div>
@@ -153,6 +190,7 @@ export default {
 
         //对某个市进行描边
         // this.getBoundary();
+        this.initMapSearch()
       });
     },
     // getBoundary() {
@@ -223,7 +261,53 @@ export default {
       }
       const marker = new BMap.Marker(point);
       this.map.addOverlay(marker);
-    }
+    },
+
+    // 位置搜索， 直接复制官方demo给的代码
+    initMapSearch() {
+      //建立一个自动完成的对象
+      this.ac = new BMap.Autocomplete({"input" : "suggestId","location" : this.map});
+        
+      this.ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+          value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }    
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+      
+        value = "";
+        if (e.toitem.index > -1) {
+          _value = e.toitem.value;
+          value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }    
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+      });
+  
+      //鼠标点击下拉列表后的事件
+      this.ac.addEventListener("onconfirm", (e) => {    
+        var _value = e.item.value;
+        const  myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+
+        this.map.clearOverlays();    //清除地图上所有覆盖物
+        const  myFun = () => {
+          var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果, 结果格式为{lng: 116.366552, lat: 40.076798}
+
+          // 改变输入框中的经纬度
+          this.BD09Value = `${pp.lng},${pp.lat}`;
+          this.inputChange('BD09', this.BD09Value);
+
+          this.map.centerAndZoom(pp, 18);
+          this.map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        var local = new BMap.LocalSearch(this.map, { //智能搜索
+          onSearchComplete: myFun
+        });
+        local.search(myValue);
+      });
+  
+    },
   }
 };
 </script>
@@ -244,9 +328,24 @@ export default {
   color: #67C23A;
 }
 
+.map-wrapper {
+  position: relative;
+}
+
 .map {
   width: 100%;
   height: 600px;
+}
+
+.map-input {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  z-index: 9999;
 }
 
 .warning {

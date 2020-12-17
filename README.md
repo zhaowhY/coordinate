@@ -1,30 +1,12 @@
 # 地理坐标在线转换工具
 
-## Demos
+## 相关连接
 - [线上地址](https://kongkong99.github.io/coordinate/#/) 
-
-
-## 项目相关npm包
-
 - 坐标转化插件: [gcoord](https://www.npmjs.com/package/gcoord)
 - 项目脚手架: [jdc-webcli](https://www.npmjs.com/package/jdc-webcli)
 
-## build step
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm start
-
-# build for integration with minification
-npm run build:test
-
-# build for production with minification
-npm run build
-```
-
+## 效果图
+<img src="./src/assets/效果截图.png" height = "300" alt="" />
 
 ## CRS
 [CRS原文链接](https://github.com/hujiulong/gcoord#crs)  
@@ -48,5 +30,15 @@ CRS为坐标系，目标支持以下几种坐标系
 | gcoord.EPSG900913  | [x,y]     | Web Mercator投影，同WebMercator，单位：米  |
 
 
+## build step
 
+``` bash
+# install dependencies
+npm install
 
+# serve with hot reload at localhost:8080
+npm start
+
+# build for production with minification
+npm run build
+```
